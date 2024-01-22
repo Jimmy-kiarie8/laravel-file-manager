@@ -58,6 +58,10 @@
                     <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                         Size
                     </th>
+                    
+                    <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                        Action
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -103,6 +107,15 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         {{ file.size }}
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"> 
+                        <button @click="showViewFileModal(file.id)" class="p-2 bg-blue-500 text-white rounded" v-if="file.mime == 'application/pdf'">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+  <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+  <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
+</svg>
+
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -111,6 +124,30 @@
                 There is no data in this folder
             </div>
             <div ref="loadMoreIntersect"></div>
+                <!-- <ViewFileModal :modelValue="viewFileModal.value" @update:modelValue="viewFileModal.value = $event" /> -->
+  
+
+
+             <!-- Fullscreen Modal -->
+    <div v-if="isOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-5 rounded shadow-lg w-full h-full">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">{{filename}}</h3>
+            <button @click="isOpen = false" class="text-gray-500 hover:text-gray-800">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="mt-2">
+            <vue-pdf-app style="height: 90vh;" :pdf="current_pdf"></vue-pdf-app>
+            <!-- Your content here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
         </div>
     </AuthenticatedLayout>
 </template>
@@ -130,7 +167,15 @@ import DownloadFilesButton from "@/Components/app/DownloadFilesButton.vue";
 import {emitter, ON_SEARCH, showSuccessNotification} from "@/event-bus.js";
 import ShareFilesButton from "@/Components/app/ShareFilesButton.vue";
 import {all} from "axios";
+import ViewFileModal from "@/Components/app/ViewFileModal.vue";
 
+
+import VuePdfApp from "vue3-pdf-app";
+// import this to use default icons for buttons
+import "vue3-pdf-app/dist/icons/main.css";
+
+
+const viewFileModal = ref(false)
 
 // Uses
 const page = usePage();
@@ -138,9 +183,13 @@ const page = usePage();
 // Refs
 const allSelected = ref(false);
 const onlyFavourites = ref(false);
+const isOpen = ref(false);
+
 const selected = ref({});
 const loadMoreIntersect = ref(null)
 let search = ref('');
+let current_pdf = ref('');
+let filename = ref('');
 
 const allFiles = ref({
     data: props.files.data,
@@ -166,6 +215,37 @@ function openFolder(file) {
 
     router.visit(route('myFiles', {folder: file.path}))
 }
+
+
+// Methods
+function showViewFileModal(id) {
+    let url = route('file.download');
+    const p = new URLSearchParams();
+    p.append('ids[]', id)
+    p.append('parent_id', page.props.folder?.id);
+   
+    httpGet(url + '?' + p.toString())
+        .then(res => {
+            console.log(res);
+            if (!res.url) return;
+
+            this.isOpen = true
+                this.current_pdf = res.url
+                this.filename = res.filename
+            // const a = document.createElement('a');
+            // a.download = res.filename;
+            // a.href = res.url;
+            // a.click();
+        })
+
+}
+
+
+function showViewFileModal1(data){
+    this.isOpen = true
+    this.current_pdf = data
+}
+
 
 function loadMore() {
     console.log("load more");
@@ -264,6 +344,8 @@ onMounted(() => {
 
 </script>
 
-<style scoped>
-
+<style>
+#toolbarViewer button {
+    display: none !important;
+}
 </style>

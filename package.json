@@ -19,6 +19,8 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.13",
         "@heroicons/vue": "^2.0.17",
-        "mitt": "^3.0.0"
+        "mitt": "^3.0.0",
+        "pdfjs-dist": "^4.0.379",
+        "vue3-pdf-app": "^1.0.3"
     }
 }
