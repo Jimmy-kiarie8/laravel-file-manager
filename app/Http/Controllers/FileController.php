@@ -29,6 +29,7 @@ class FileController extends Controller
 {
     public function myFiles(Request $request, string $folder = null)
     {
+        // dd(Auth::user());
         $search = $request->get('search');
 
         if ($folder) {
