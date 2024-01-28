@@ -195,6 +195,12 @@ const loadMoreIntersect = ref(null)
 let search = ref('');
 let current_pdf = ref('');
 let filename = ref('');
+// Props & Emit
+const props = defineProps({
+    files: Object,
+    folder: Object,
+    ancestors: Object
+})
 
 const allFiles = ref({
     data: props.files.data,
@@ -202,12 +208,6 @@ const allFiles = ref({
 })
 let params = null;
 
-// Props & Emit
-const props = defineProps({
-    files: Object,
-    folder: Object,
-    ancestors: Object
-})
 
 // Computed
 const selectedIds = computed(() => Object.entries(selected.value).filter(a => a[1]).map(a => a[0]))

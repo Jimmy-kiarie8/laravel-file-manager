@@ -64,6 +64,13 @@ import DownloadFilesButton from "@/Components/app/DownloadFilesButton.vue";
 import RestoreFilesButton from "@/Components/app/RestoreFilesButton.vue";
 import DeleteForeverButton from "@/Components/app/DeleteForeverButton.vue";
 
+// Props & Emit
+const props = defineProps({
+    files: Object,
+    folder: Object,
+    ancestors: Object
+})
+
 // Uses
 
 // Refs
@@ -74,13 +81,6 @@ const loadMoreIntersect = ref(null)
 const allFiles = ref({
     data: props.files.data,
     next: props.files.links.next
-})
-
-// Props & Emit
-const props = defineProps({
-    files: Object,
-    folder: Object,
-    ancestors: Object
 })
 
 // Computed
