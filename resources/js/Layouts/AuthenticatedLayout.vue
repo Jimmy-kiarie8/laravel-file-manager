@@ -2,6 +2,7 @@
     <div class="h-screen bg-gray-50 flex w-full gap-4">
         <Navigation/>
 
+
         <main @drop.prevent="handleDrop"
               @dragover.prevent="onDragOver"
               @dragleave.prevent="onDragLeave"
