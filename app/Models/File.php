@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class File extends Model
 {
-    use HasFactory, HasCreatorAndUpdater, NodeTrait, SoftDeletes;
+    use HasFactory, HasCreatorAndUpdater, NodeTrait, SoftDeletes, LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
+    }
 
     public function user(): BelongsTo
     {

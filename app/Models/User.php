@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,6 +11,12 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -19,7 +26,23 @@ class User extends Authenticatable
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use LogsActivity;
+    use HasRoles;
 
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        // return LogOptions::defaults()
+        // ->logOnly(['name', 'text']);
+        return LogOptions::defaults()
+        ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}");
+        // Chain fluent methods for configuration options
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('Y-m-d');
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -58,4 +81,25 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    function auth_user() {
+
+        $user =Auth::user();
+
+        $permissions = [];
+        foreach (Permission::where('guard_name', 'web')->get() as $permission) {
+            // return $permission->name;
+            // return $user->hasPermissionTo('Custom');
+            // return  $user->can($permission->name);
+            if ($user->hasPermissionTo($permission->name)) {
+                $permissions[$permission->name] = true;
+            } else {
+                $permissions[$permission->name] = false;
+            }
+        }
+
+        // $user = $user->setAppends(['is_client', 'is_admin'])->toArray();
+       return Arr::prepend($user->toArray(), $permissions, 'can');
+
+    }
 }

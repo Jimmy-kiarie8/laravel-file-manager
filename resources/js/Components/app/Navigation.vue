@@ -11,9 +11,11 @@
 
             <div class="py-3">
                 <NavLink :href="route('myFiles')" :active="$page.props.route_name === 'myFiles'">My Files</NavLink>
-                <NavLink :href="route('file.sharedWithMe')" :active="$page.props.route_name === 'file.sharedWithMe'">Shared with me</NavLink>
+                <NavLink :href="route('users')" :active="$page.props.route_name === 'users'" v-if="auth_user.can['View Logs']">User</NavLink>
+                <NavLink :href="route('logs')" :active="$page.props.route_name === 'logs'" v-if="auth_user.can['View Logs']">Logs</NavLink>
+                <!-- <NavLink :href="route('file.sharedWithMe')" :active="$page.props.route_name === 'file.sharedWithMe'">Shared with me</NavLink>
                 <NavLink :href="route('file.sharedByMe')" :active="$page.props.route_name === 'file.sharedByMe'">Shared by me</NavLink>
-                <NavLink :href="route('trash')" :active="$page.props.route_name === 'trash'">Trash</NavLink>
+                <NavLink :href="route('trash')" :active="$page.props.route_name === 'trash'">Trash</NavLink> -->
             </div>
         </div>
     </nav>
@@ -32,6 +34,9 @@ import NavLink from "@/Components/NavLink.vue";
 
 // Props & Emit
 
+const props = defineProps({
+    auth_user: Object
+})
 // Computed
 
 // Methods

@@ -29,16 +29,21 @@ class FileController extends Controller
 {
     public function myFiles(Request $request, string $folder = null)
     {
-        // dd(Auth::user());
+
+        $user = new User;
+        $auth_user = $user->auth_user();
         $search = $request->get('search');
 
         if ($folder) {
             $folder = File::query()
-                ->where('created_by', Auth::id())
+                ->when(Auth::user()->hasRole('ICT'), function ($q) {
+                    return $q->where('created_by', Auth::id());
+                })
                 ->where('path', $folder)
                 ->firstOrFail();
         }
         if (!$folder) {
+
             $folder = $this->getRoot();
         }
 
@@ -47,7 +52,9 @@ class FileController extends Controller
         $query = File::query()
             ->select('files.*')
             ->with('starred')
-            ->where('created_by', Auth::id())
+            ->when(Auth::user()->hasRole('ICT'), function ($q) {
+                return $q->where('created_by', Auth::id());
+            })
             ->where('_lft', '!=', 1)
             ->orderBy('is_folder', 'desc')
             ->orderBy('files.created_at', 'desc')
@@ -76,7 +83,8 @@ class FileController extends Controller
 
         $folder = new FileResource($folder);
 
-        return Inertia::render('MyFiles', compact('files', 'folder', 'ancestors'));
+
+        return Inertia::render('MyFiles', compact('files', 'folder', 'ancestors', 'auth_user'));
     }
 
     public function trash(Request $request)
@@ -182,7 +190,9 @@ class FileController extends Controller
 
     private function getRoot()
     {
-        return File::query()->whereIsRoot()->where('created_by', Auth::id())->firstOrFail();
+        return File::query()->whereIsRoot()->when(Auth::user()->hasRole('ICT'), function ($q) {
+            return $q->where('created_by', Auth::id());
+        })->firstOrFail();
     }
 
     public function saveFileTree($fileTree, $parent, $user)
@@ -512,7 +522,7 @@ class FileController extends Controller
                     $content = Storage::disk('local')->get($file->storage_path);
                 }
 
-                Log::debug("Getting file content. File:  " .$file->storage_path).". Content: " .  intval($content);
+                Log::debug("Getting file content. File:  " . $file->storage_path) . ". Content: " .  intval($content);
 
                 $success = Storage::disk('public')->put($dest, $content);
                 Log::debug('Inserted in public disk. "' . $dest . '". Success: ' . intval($success));

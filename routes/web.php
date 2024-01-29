@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LogsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,10 +32,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return redirect()->route('myFiles');
+        // return Inertia::render('Dashboard');
     })->name('dashboard');
 });
 
+
+Route::get('logs', [LogsController::class, 'logs'])->name('logs');
+Route::get('users-list', [AdminController::class, 'users'])->name('users');
 
 Route::get('/', function () {
     return redirect()->route('myFiles');
@@ -67,6 +73,4 @@ Route::controller(\App\Http\Controllers\FileController::class)
 
 
         Route::get('/file/view', 'file_view')->name('file.view');
-
     });
-

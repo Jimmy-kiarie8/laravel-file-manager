@@ -47,6 +47,18 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
+                <InputLabel for="company" value="Company" />
+                <TextInput
+                    id="company"
+                    v-model="form.company"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autocomplete="company"
+                />
+                <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+            <div class="mt-4">
                 <InputLabel for="email" value="Email" />
                 <TextInput
                     id="email"

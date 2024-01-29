@@ -1,5 +1,5 @@
 <template>
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :auth_user="auth_user">
         <nav class="flex items-center justify-between p-1 mb-3">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li v-for="ans of ancestors.data" :key="ans.id" class="inline-flex items-center">
@@ -24,13 +24,13 @@
             </ol>
 
             <div class="flex">
-                <label class="flex items-center mr-3">
+                <!-- <label class="flex items-center mr-3">
                     Only Favourites
                     <Checkbox @change="showOnlyFavourites" v-model:checked="onlyFavourites" class="ml-2" />
-                </label>
-                <ShareFilesButton :all-selected="allSelected" :selected-ids="selectedIds" />
-                <DownloadFilesButton :all="allSelected" :ids="selectedIds" class="mr-2" />
-                <DeleteFilesButton :delete-all="allSelected" :delete-ids="selectedIds" @delete="onDelete" />
+                </label> -->
+                <!-- <ShareFilesButton :all-selected="allSelected" :selected-ids="selectedIds" /> -->
+                <!-- <DownloadFilesButton :all="allSelected" :ids="selectedIds" class="mr-2" /> -->
+                <DeleteFilesButton v-if="auth_user.can['Delete Files']" :delete-all="allSelected" :delete-ids="selectedIds" @delete="onDelete" />
             </div>
         </nav>
         <div class="flex-1 overflow-auto">
@@ -40,9 +40,9 @@
                         <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left w-[30px] max-w-[30px] pr-0">
                             <Checkbox @change="onSelectAllChange" v-model:checked="allSelected" />
                         </th>
-                        <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                        <!-- <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
 
-                        </th>
+                        </th> -->
                         <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                             Name
                         </th>
@@ -60,7 +60,7 @@
                         </th>
 
                         <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            Action
+                            Click to View
                         </th>
                     </tr>
                 </thead>
@@ -74,7 +74,7 @@
                             <Checkbox @change="$event => onSelectCheckboxChange(file)" v-model="selected[file.id]"
                                 :checked="selected[file.id] || allSelected" />
                         </td>
-                        <td class="px-6 py-4 max-w-[40px] text-sm font-medium text-gray-900 text-yellow-500">
+                        <!-- <td class="px-6 py-4 max-w-[40px] text-sm font-medium text-gray-900 text-yellow-500">
                             <div @click.stop.prevent="addRemoveFavourite(file)">
                                 <svg v-if="!file.is_favourite" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -89,7 +89,7 @@
                                 </svg>
 
                             </div>
-                        </td>
+                        </td> -->
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center">
                             <FileIcon :file="file" />
                             {{ file.name }}
@@ -168,9 +168,9 @@ import { computed, onMounted, onUpdated, ref } from "vue";
 import { httpGet, httpPost } from "@/Helper/http-helper.js";
 import Checkbox from "@/Components/Checkbox.vue";
 import DeleteFilesButton from "@/Components/app/DeleteFilesButton.vue";
-import DownloadFilesButton from "@/Components/app/DownloadFilesButton.vue";
+// import DownloadFilesButton from "@/Components/app/DownloadFilesButton.vue";
 import { emitter, ON_SEARCH, showSuccessNotification } from "@/event-bus.js";
-import ShareFilesButton from "@/Components/app/ShareFilesButton.vue";
+//import ShareFilesButton from "@/Components/app/ShareFilesButton.vue";
 import { all } from "axios";
 import ViewFileModal from "@/Components/app/ViewFileModal.vue";
 
@@ -199,7 +199,8 @@ let filename = ref('');
 const props = defineProps({
     files: Object,
     folder: Object,
-    ancestors: Object
+    ancestors: Object,
+    auth_user: Object
 })
 
 const allFiles = ref({

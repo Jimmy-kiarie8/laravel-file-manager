@@ -1,6 +1,6 @@
 <template>
     <div class="h-screen bg-gray-50 flex w-full gap-4">
-        <Navigation/>
+        <Navigation :auth_user="auth_user"/>
 
 
         <main @drop.prevent="handleDrop"
@@ -42,6 +42,9 @@ import FormProgress from "@/Components/app/FormProgress.vue";
 import ErrorDialog from "@/Components/ErrorDialog.vue";
 import Notification from "@/Components/Notification.vue";
 
+const props = defineProps({
+    auth_user: Object
+})
 // Uses
 const page = usePage();
 const fileUploadForm = useForm({
