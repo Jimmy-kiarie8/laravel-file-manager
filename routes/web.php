@@ -6,6 +6,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +42,9 @@ Route::middleware([
 
 Route::get('logs', [LogsController::class, 'logs'])->name('logs');
 Route::get('users-list', [AdminController::class, 'users'])->name('users');
+Route::get('users-create', [UserController::class, 'users'])->name('users');
+
+Route::resource('users-model', UserController::class);
 
 Route::get('/', function () {
     return redirect()->route('myFiles');
