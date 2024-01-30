@@ -26,11 +26,11 @@ class FilesActionRequest extends ParentIdBaseRequest
                     $file = File::query()
                         ->leftJoin('file_shares', 'file_shares.file_id', 'files.id')
                         ->where('files.id', $id)
-                        ->where(function ($query) {
-                            /** @var $query \Illuminate\Database\Query\Builder */
-                            $query->where('files.created_by', Auth::id())
-                                ->orWhere('file_shares.user_id', Auth::id());
-                        })
+                        // ->where(function ($query) {
+                        //     /** @var $query \Illuminate\Database\Query\Builder */
+                        //     $query->where('files.created_by', Auth::id())
+                        //         ->orWhere('file_shares.user_id', Auth::id());
+                        // })
                         ->first();
 
                     if (!$file) {

@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\File;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -40,6 +43,17 @@ class AdminUserSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('password')
         ]);
+
+        // $id = $adminUser->id;
+        // Log::alert($id);
+
+        // $file = new File();
+        // $file->created_by = 1;
+        // $file->name = $adminUser->name;
+        // $file->is_folder = true;
+        // $file->save();
+
+
         $ictRole->givePermissionTo(['Add Files', 'Delete Files', 'View Files']);
         $bidersRole->givePermissionTo('View Files');
 

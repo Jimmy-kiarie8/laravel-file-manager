@@ -247,7 +247,7 @@ class FileController extends Controller
     public function download(FilesActionRequest $request)
     {
         $data = $request->validated();
-        $parent = $request->parent;
+       $parent = $request->parent;
 
         $all = $data['all'] ?? false;
         $ids = $data['ids'] ?? [];
