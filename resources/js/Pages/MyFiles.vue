@@ -6,7 +6,7 @@
                     <Link v-if="!ans.parent_id" :href="route('myFiles')"
                         class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                     <HomeIcon class="w-4 h-4" />
-                    My Files
+                    Files
                     </Link>
                     <div v-else class="flex items-center">
                         <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"

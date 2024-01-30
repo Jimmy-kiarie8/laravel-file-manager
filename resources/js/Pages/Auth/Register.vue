@@ -46,7 +46,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
-            <div class="mt-4">
+            <!-- <div class="mt-4">
                 <InputLabel for="company" value="Company" />
                 <TextInput
                     id="company"
@@ -57,7 +57,7 @@ const submit = () => {
                     autocomplete="company"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+            </div> -->
             <div class="mt-4">
                 <InputLabel for="email" value="Email" />
                 <TextInput

@@ -24,16 +24,15 @@ class AdminUserSeeder extends Seeder
 
         Permission::create(['name' => 'Add Files']);
         Permission::create(['name' => 'Delete Files']);
-        $permision = Permission::create(['name' => 'View Files']);
+        Permission::create(['name' => 'View Files']);
 
-        $ictRole->givePermissionTo(Permission::all());
-        $permision->assignRole($bidersRole);
 
         Permission::create(['name' => 'Add Users']);
         Permission::create(['name' => 'Delete Users']);
         Permission::create(['name' => 'View Logs']);
         Permission::create(['name' => 'View All Files']);
-        $adminRole->givePermissionTo(Permission::all());
+
+
 
         $adminUser = User::factory()->create([
             'name' => 'Admin',
@@ -41,6 +40,10 @@ class AdminUserSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => Hash::make('password')
         ]);
+        $ictRole->givePermissionTo(['Add Files', 'Delete Files', 'View Files']);
+        $bidersRole->givePermissionTo('View Files');
+
+        $adminRole->givePermissionTo(Permission::all());
         $adminUser->assignRole('Administrator');
     }
 }

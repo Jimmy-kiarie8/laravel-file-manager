@@ -43,7 +43,6 @@ class FileController extends Controller
                 ->firstOrFail();
         }
         if (!$folder) {
-
             $folder = $this->getRoot();
         }
 
@@ -190,9 +189,19 @@ class FileController extends Controller
 
     private function getRoot()
     {
-        return File::query()->whereIsRoot()->when(Auth::user()->hasRole('ICT'), function ($q) {
+        $file = File::query()->whereIsRoot()->when(Auth::user()->hasRole('ICT'), function ($q) {
             return $q->where('created_by', Auth::id());
-        })->firstOrFail();
+        })->first();
+
+        if (!$file) {
+            $file = new File;
+            $file->name = Auth::user()->name;
+            $file->is_folder = true;
+            $file->created_by = Auth::id();
+            $file->save();
+        }
+
+        return $file;
     }
 
     public function saveFileTree($fileTree, $parent, $user)
