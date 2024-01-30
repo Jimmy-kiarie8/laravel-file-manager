@@ -18,7 +18,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -82,15 +82,12 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    function auth_user() {
+    public function auth_user() {
 
         $user =Auth::user();
 
         $permissions = [];
         foreach (Permission::where('guard_name', 'web')->get() as $permission) {
-            // return $permission->name;
-            // return $user->hasPermissionTo('Custom');
-            // return  $user->can($permission->name);
             if ($user->hasPermissionTo($permission->name)) {
                 $permissions[$permission->name] = true;
             } else {
@@ -98,7 +95,6 @@ class User extends Authenticatable
             }
         }
 
-        // $user = $user->setAppends(['is_client', 'is_admin'])->toArray();
        return Arr::prepend($user->toArray(), $permissions, 'can');
 
     }
