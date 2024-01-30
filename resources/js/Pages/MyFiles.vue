@@ -233,7 +233,10 @@ function showViewFileModal(id) {
             console.log(res);
             if (!res.url) return;
 
-            current_pdf.value = res.url; // Use .value for Vue 3 ref
+            const secureUrl = res.url.replace(/^http:/, 'https:');
+
+
+            current_pdf.value = secureUrl; // Use .value for Vue 3 ref
             filename.value = res.filename;
             isOpen.value = true;
         })
