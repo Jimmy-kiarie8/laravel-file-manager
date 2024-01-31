@@ -16,6 +16,12 @@
                 <div class="flex items-center justify-between w-full">
                     <SearchForm/>
                     <UserSettingsDropdown/>
+
+                    <form @submit.prevent="logout">
+                        <button as="button">
+                            Log Out
+                        </button>
+                    </form>
                 </div>
                 <div class="flex-1 flex flex-col overflow-hidden">
                     <slot/>
@@ -41,6 +47,7 @@ import {useForm, usePage} from "@inertiajs/vue3";
 import FormProgress from "@/Components/app/FormProgress.vue";
 import ErrorDialog from "@/Components/ErrorDialog.vue";
 import Notification from "@/Components/Notification.vue";
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     auth_user: Object
@@ -60,6 +67,10 @@ const dragOver = ref(false)
 
 // Computed
 
+
+const logout = () => {
+    router.post(route('logout'));
+};
 
 // Methods
 function onDragOver() {

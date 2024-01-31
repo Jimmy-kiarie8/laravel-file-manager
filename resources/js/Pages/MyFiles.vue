@@ -66,7 +66,6 @@
                 </thead>
                 <tbody>
                     <tr v-for="file of allFiles.data" :key="file.id" @click="$event => toggleFileSelect(file)"
-                        @dblclick="openFolder(file)"
                         class="border-b transition duration-300 ease-in-out hover:bg-blue-100 cursor-pointer"
                         :class="(selected[file.id] || allSelected) ? 'bg-blue-50' : 'bg-white'">
                         <td
@@ -90,7 +89,7 @@
 
                             </div>
                         </td> -->
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 flex items-center" @click="openFolder(file)">
                             <FileIcon :file="file" />
                             {{ file.name }}
                         </td>
