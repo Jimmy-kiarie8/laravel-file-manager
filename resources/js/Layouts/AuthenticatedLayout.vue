@@ -17,11 +17,6 @@
                     <SearchForm/>
                     <UserSettingsDropdown/>
 
-                    <form @submit.prevent="logout">
-                        <button as="button">
-                            Log Out
-                        </button>
-                    </form>
                 </div>
                 <div class="flex-1 flex flex-col overflow-hidden">
                     <slot/>
