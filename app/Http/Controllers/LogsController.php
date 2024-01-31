@@ -15,7 +15,7 @@ class LogsController extends Controller
 
         $user = new User;
         $auth_user = $user->auth_user();
-        $lastActivity = Activity::paginate(15); //returns the last logged activity
+        $lastActivity = Activity::latest()->paginate(15); //returns the last logged activity
 
          $lastActivity->transform(function($activity) {
             $user = User::find($activity->causer_id);

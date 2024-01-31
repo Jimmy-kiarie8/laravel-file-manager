@@ -51,8 +51,8 @@
                 <tfoot>
 
                     <div class="flex justify-between">
-                        <inertia-link :href="lastActivity.prev_page_url" v-if="lastActivity.prev_page_url">Previous</inertia-link>
-                        <inertia-link :href="lastActivity.next_page_url" v-if="lastActivity.next_page_url">Next</inertia-link>
+                        <Link :href="lastActivity.prev_page_url" v-if="lastActivity.prev_page_url">Previous</Link>
+                        <Link :href="lastActivity.next_page_url" v-if="lastActivity.next_page_url">Next</Link>
                     </div>
                 </tfoot>
             </table>
@@ -66,18 +66,10 @@
 
 <script setup>
 // Imports
-import { HomeIcon } from '@heroicons/vue/20/solid'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { router } from "@inertiajs/vue3";
-import { Link } from '@inertiajs/vue3'
-import FileIcon from "@/Components/app/FileIcon.vue";
 import { computed, onMounted, onUpdated, ref } from "vue";
-import { httpGet } from "@/Helper/http-helper.js";
-import Checkbox from "@/Components/Checkbox.vue";
-import DeleteFilesButton from "@/Components/app/DeleteFilesButton.vue";
 import DownloadFilesButton from "@/Components/app/DownloadFilesButton.vue";
-import RestoreFilesButton from "@/Components/app/RestoreFilesButton.vue";
-import DeleteForeverButton from "@/Components/app/DeleteForeverButton.vue";
+import { Link } from '@inertiajs/vue3';
 
 // Props & Emit
 const props = defineProps({
