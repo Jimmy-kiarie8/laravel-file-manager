@@ -37,7 +37,7 @@
             <table class="min-w-full">
                 <thead class="bg-gray-100 border-b">
                     <tr>
-                        <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left w-[30px] max-w-[30px] pr-0">
+                        <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left w-[30px] max-w-[30px] pr-0" v-if="auth_user.can['Delete Files']">
                             <Checkbox @change="onSelectAllChange" v-model:checked="allSelected" />
                         </th>
                         <!-- <th class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -65,10 +65,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="file of allFiles.data" :key="file.id" @click="$event => toggleFileSelect(file)"
+                    <tr v-for="file of allFiles.data" :key="file.id"
                         class="border-b transition duration-300 ease-in-out hover:bg-blue-100 cursor-pointer"
                         :class="(selected[file.id] || allSelected) ? 'bg-blue-50' : 'bg-white'">
-                        <td
+                        <td  v-if="auth_user.can['Delete Files']"
                             class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 w-[30px] max-w-[30px] pr-0">
                             <Checkbox @change="$event => onSelectCheckboxChange(file)" v-model="selected[file.id]"
                                 :checked="selected[file.id] || allSelected" />
