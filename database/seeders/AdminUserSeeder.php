@@ -41,7 +41,7 @@ class AdminUserSeeder extends Seeder
             'name' => 'Admin',
             'company' => 'Admin',
             'email' => 'admin@admin.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('Kilimo@2024!')
         ]);
 
         // $id = $adminUser->id;
