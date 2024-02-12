@@ -265,6 +265,9 @@ class FileController extends Controller
             [$url, $filename] = $this->getDownloadUrl($ids, $parent->name);
         }
 
+        if (strpos($url, "https") === 0) {
+            $url = str_replace("https", "http", $url);
+        }
         return [
             'url' => $url,
             'filename' => $filename
@@ -531,12 +534,12 @@ class FileController extends Controller
                     $content = Storage::disk('local')->get($file->storage_path);
                 }
 
-                Log::debug("Getting file content. File:  " . $file->storage_path) . ". Content: " .  intval($content);
+                // Log::debug("Getting file content. File:  " . $file->storage_path) . ". Content: " .  intval($content);
 
                 $success = Storage::disk('public')->put($dest, $content);
-                Log::debug('Inserted in public disk. "' . $dest . '". Success: ' . intval($success));
+                // Log::debug('Inserted in public disk. "' . $dest . '". Success: ' . intval($success));
                 $url = asset(Storage::disk('public')->url($dest));
-                Log::debug("Logging URL " . $url);
+                // Log::debug("Logging URL " . $url);
                 $filename = $file->name;
             }
         } else {
