@@ -264,7 +264,8 @@ class FileController extends Controller
         } else {
             [$url, $filename] = $this->getDownloadUrl($ids, $parent->name);
         }
-
+        Log::debug($url);
+        Log::debug(strpos($url, "https"));
         if (strpos($url, "https") === 0) {
             $url = str_replace("https", "http", $url);
         }
