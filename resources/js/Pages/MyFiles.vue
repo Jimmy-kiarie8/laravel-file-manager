@@ -232,7 +232,8 @@ function showViewFileModal(id) {
             console.log(res);
             if (!res.url) return;
 
-            const secureUrl = res.url.replace(/^http:/, 'https:');
+            const secureUrl = res.url;
+            // const secureUrl = res.url.replace(/^http:/, 'https:');
 
 
             current_pdf.value = secureUrl; // Use .value for Vue 3 ref
