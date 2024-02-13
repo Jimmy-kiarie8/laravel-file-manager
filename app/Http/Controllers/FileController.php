@@ -29,11 +29,10 @@ class FileController extends Controller
 {
     public function myFiles(Request $request, string $folder = null)
     {
-
         $user = new User;
         $auth_user = $user->auth_user();
         $search = $request->get('search');
-
+        // return $folder;
         if ($folder) {
             $folder = File::query()
                 ->when(Auth::user()->hasRole('ICT'), function ($q) {
